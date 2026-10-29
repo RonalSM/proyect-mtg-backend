@@ -12,6 +12,7 @@
     "prisma:generate": "prisma generate --schema=apps/server/prisma/schema.prisma",
     "build:shared": "npm run --workspace=@mtgc/shared build",
     "postinstall": "npm run prisma:generate && npm run build:shared",
+    "heroku-postbuild": "npm run build",
     "build": "npm run prisma:generate && npm run build:shared && npm run --workspace=@mtgc/server build",
     "dev": "concurrently -k -n \"shared,server\" -c \"cyan,green\" \"npm run --workspace=@mtgc/shared dev\" \"npm run --workspace=@mtgc/server dev\"",
     "dev:server": "npm run --workspace=@mtgc/server dev",
@@ -34,5 +35,8 @@
     "prettier": "^3.5.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
