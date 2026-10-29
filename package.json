@@ -1,0 +1,38 @@
+{
+  "name": "mtgc-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Servidor WebSocket y API REST para Mesa Virtual de Commander (MTG)",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "start": "node apps/server/dist/index.js",
+    "prisma:generate": "prisma generate --schema=apps/server/prisma/schema.prisma",
+    "build:shared": "npm run --workspace=@mtgc/shared build",
+    "postinstall": "npm run prisma:generate && npm run build:shared",
+    "build": "npm run prisma:generate && npm run build:shared && npm run --workspace=@mtgc/server build",
+    "dev": "concurrently -k -n \"shared,server\" -c \"cyan,green\" \"npm run --workspace=@mtgc/shared dev\" \"npm run --workspace=@mtgc/server dev\"",
+    "dev:server": "npm run --workspace=@mtgc/server dev",
+    "test": "npm run --workspaces --if-present test",
+    "typecheck": "npm run build:shared && npm run --workspaces --if-present typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{ts,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
+    "sync:cards": "npm run --workspace=@mtgc/server sync:cards",
+    "seed:presets": "npm run --workspace=@mtgc/server seed:presets"
+  },
+  "dependencies": {
+    "prisma": "^7.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^22.13.0",
+    "concurrently": "^10.0.6",
+    "eslint": "^9.20.0",
+    "prettier": "^3.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
